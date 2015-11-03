@@ -17,11 +17,24 @@ namespace SkeletonJelly {
 	public class SkeletonGenerator {
 		const string CLASSDEF_REGEX = @"(\w+\ )+\{(.|\n)*?\}";
 
+		const string USING_REGEX = @"using.*\;";
+
 		public List<SJClass> classes;
+		public List<string> usings;
+
+		public string header { 
+			get {
+				StringBuilder str = new StringBuilder();
+				foreach (string use in usings) { str += use + "\n"; }
+				return str.ToString();
+			}
+		}
 
 		public SkeletonGenerator(string input) {
 			classes = new List<SJClass>();
+			usings = new List<string>();
 			Regex classReg = new Regex(CLASSDEF_REGEX);
+			Regex usingReg = new Regex(USING_REGEX);
 			var match = classReg.Match(input);
 
 			int i = 0;
@@ -36,6 +49,16 @@ namespace SkeletonJelly {
 				match = match.NextMatch();
 				i++;
 			}
+			
+			match = usingReg.Match(input);
+			Console.WriteLine("match: " + match.Value);
+			while (match.Success) {
+				usings.Add(match.Value);
+				Console.WriteLine("Using: [" + match.Value + "]");
+
+				match = match.NextMatch();
+			}
+
 
 
 		}
@@ -112,6 +135,7 @@ namespace SkeletonJelly {
 
 		const string FUNCNAME_REGEX = @"(\w[\w\d]*|\S+)\(";
 		const string SIGNATURE_REGEX = @"\(.*\)";
+
 		public SJMethod(string line) {
 			Regex func = new Regex(FUNCNAME_REGEX);
 			Regex sig = new Regex(SIGNATURE_REGEX);

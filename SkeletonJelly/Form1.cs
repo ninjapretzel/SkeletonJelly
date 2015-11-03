@@ -56,13 +56,16 @@ namespace SkeletonJelly {
 			if (sjFiles != null) {
 				foreach (string file in sjFiles) {
 					string text = File.ReadAllText(file);
-
+					
 					SkeletonGenerator gen = new SkeletonGenerator(text);
+					string header = gen.header;
 
 					foreach (SJClass c in gen.classes) {
-						string generated = c.GeneratedString();
+						StringBuilder generated = new StringBuilder(header);
+						generated += c.GeneratedString();
+
 						string path = dstPath + "/" + c.name + ".cs";
-						File.WriteAllText(path, generated);
+						File.WriteAllText(path, generated.ToString());
 						log.Add("Created File:" + path);
 
 					}
