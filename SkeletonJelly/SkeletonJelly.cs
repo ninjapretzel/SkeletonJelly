@@ -51,10 +51,10 @@ namespace SkeletonJelly {
 			}
 			
 			match = usingReg.Match(input);
-			Console.WriteLine("match: " + match.Value);
+			//Console.WriteLine("match: " + match.Value);
 			while (match.Success) {
 				usings.Add(match.Value);
-				Console.WriteLine("Using: [" + match.Value + "]");
+				//Console.WriteLine("Using: [" + match.Value + "]");
 
 				match = match.NextMatch();
 			}

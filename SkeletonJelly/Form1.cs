@@ -47,34 +47,9 @@ namespace SkeletonJelly {
 			string srcPath = sourceDir.Text;
 			string dstPath = destDir.Text;
 
-			if (dstPath.Length < 1 || !Directory.Exists(dstPath)) {
-				dstPath = srcPath;
-			}
+			Program.Convert(srcPath, dstPath);
 
-			
-			List<string> log = new List<string>();
-			if (sjFiles != null) {
-				foreach (string file in sjFiles) {
-					string text = File.ReadAllText(file);
-					
-					SkeletonGenerator gen = new SkeletonGenerator(text);
-					string header = gen.header;
-
-					foreach (SJClass c in gen.classes) {
-						StringBuilder generated = new StringBuilder(header);
-						generated += c.GeneratedString();
-
-						string path = dstPath + "/" + c.name + ".cs";
-						File.WriteAllText(path, generated.ToString());
-						log.Add("Created File:" + path);
-
-					}
-
-				}
-
-			}
-
-			logBox.Lines = log.ToArray();
+			logBox.Lines = Program.log.ToArray();
 		}
 
 
